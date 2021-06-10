@@ -1,0 +1,70 @@
+
+VCS Memory Mapping
+
+ROM:
+	$F000 --------> $FFFF
+
+"Zero Page":
+	$0000 --------> $00FF
+
+	In which is split between the TIA registers and RAM, equally.
+
+	But what does all of this mean?
+	-------------------------------
+	
+	When we are talking about a memory map, we are talking about the location as 
+	to where things are located in address space.
+
+	In the VCS, we have the VCS buss. In the VCS bus, we have connected three 
+	very important things, TIA (Television Interface Adapter), PIA (Peripheral 
+	Interface Adapter), and ROM (Read-Only Memory).
+	
+	Via the TIA we can access the colour of the background that we wish to 
+	display, the colour of player sprites, the play-field, etc. 
+	
+	Our PIA is essentially where all of the system RAM is stored. That is all 
+	whopping 256 bytes of it. The PIA is also where the player input is handled.
+
+
+The Official VCS Memory Map
+
+	TIA Registers:				Cartridge ROM:
+		
+		$00					$F000
+		$01					$F001
+		$02					$F002
+		 -					  -
+		 -					  -
+		$7D					$FFFD
+		$7E					$FFFE
+		$7F					$FFFF
+	
+	PIA RAM:
+	
+		$80
+		$81
+		$82
+		 -
+		 -
+		$FD
+		$FE
+		$FF
+
+	These are all together 
+	our "Zero Page"
+	
+	
+
+	Do we need to remember all of these addresses?
+	----------------------------------------------
+
+	The answer is no. For this line of tutorials we will be employing the help of
+	header file "vcs.h", in which contains useful definitions of important memory
+	space addresses.
+
+	To use this header, all you need to do is add include "vcs.h" at the beginning
+	of our assembly files. This works much like the #include macro in C.
+
+	Not only will we be using the "vcs.h" header file. We will also be using the
+	the "macro.h" header file. This will provide us with many useful and time
+	saving macros.

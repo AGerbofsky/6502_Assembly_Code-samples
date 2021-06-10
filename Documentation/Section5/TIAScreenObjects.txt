@@ -1,0 +1,70 @@
+
+
+What was ATARI's purpose in designing the TIA Chip?
+===================================================
+
+The rational behind the design of the TIA was to aid ATARI to be able to create
+a universal "pong" machine. That is to help ATARI to be able to make a machine
+that could be programmed to make games similar to PONG, TANK, and Computer
+Space, without needing to design discrete hardware each and every time; to 
+allow ATARI to create games effortlessly in software, rather than with 
+electrical hardware.
+
+What are the components of a VCS game?
+======================================
+
+In a normal VCS game you have just a couple of fundimental elements:
+
+	- A background
+	- A playfield
+	- Player elements
+		- Player0
+		- player1
+		- Missle0
+		- Missle1
+		- Ball
+
+	Player elements are objects such as those representing player0-1, as
+	well as their sub objects, such as missles and balls.
+
+	Player elements have their own colors, positions, etc.
+
+TIA Scanlines and Game Elements
+===============================
+
+When we program our games, the TIA scanlines will be rendered based on how we
+configure our TIA's screen objects (via the TIA's registers).
+
+
+Screen Elements in depth
+=======================
+
+Background
+
+	- The background takes up the whole visible screen (160x192 px).
+
+	- We can only change the background color per horizontal scanline
+	  (COLUBK).
+
+	- The background is always displayed behind all the other screen
+	  elements.
+
+Playfield
+
+	- 20-bit pattern, rendered over the left side of the scanline.
+
+	- One color per horizontal scanline.
+
+	- The right side will either REPEAT or REFLECT the same pattern.
+
+	Registers pertaining to the Playfield:
+
+		- PF0, PF1, PF2
+		- COLUPF
+		- CTRLPF
+			- D0: 	 Reflect
+			- D1:	 Score
+			- D2:	 Priority
+			- D4-D5: Ball size (1, 2, 4, 8)
+		
+

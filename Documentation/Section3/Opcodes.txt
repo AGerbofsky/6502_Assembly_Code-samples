@@ -1,0 +1,126 @@
+
+MOS 6502 Opcodes, and Instructions Indepth
+Notes by: Aidan U. Gerbofsky, on the 22nd of June, 2020
+Section 3 of "Learn Assembly Langauge by Making Games for the Atari 2600", Gustavo Pezzi
+www.udemy.com/course/programming-games-for-the-atari-2600/learn/lecture/13557952
+
+===========================================================================================
+
+In this notes page over Section 3, we will be dissecting all of the most usefull instructions 
+available on the 6502, and thus all subsequently dissending processors, such as the 6507,
+found in the ATARI VCS/2600.
+
+To make the navigation of this notes page much easier, the subsequent information regarding the processor instructions will be broken down into multiple sub-categories. These are:
+
+
+
+- Load and Store instructions
+- Arithmetic instructions
+- Increment and Decrement Instructions
+- Logical Instructions
+- Jump, Branch, Compare Instructions
+- Shift and Rotate Instructions
+- Transfer Instructions
+- Stack Instructions
+- Subroutine Instructions
+- Set/Reset Instructions
+- NOP/BRK Instructions
+
+===========================================================================================
+
+Load and Store Instructions
+
+    Our Load Instructions are:
+    
+        - LDA   ; Load a value in the A/Accumulator register
+        - LDX   ; Load a value in the X register
+        - LDY   ; Load a value in the Y register
+        
+    Our Store Instructions:
+    
+        - STA   ; Store the value of the A/Accumulator register into memory
+        - STX   ; Store the value of the the X register into memory
+        - STY   ; Store the value of the the Y register into memory
+        
+===========================================================================================
+
+Arithmetic Instructions
+
+    Our Arithmetic instructions are:
+
+        - ADC   ; Add a value to the accumultor (with carry)
+        - SBC   ; Subtract a value from the accumultor (with carry)
+        
+    This is it... If you are at all familiar with a RISC based instruction set, this is where that model comes from.
+    
+    Inorder to perform a multiplication instruction, the processor must perform a sequence of addition instruction. Similarly, if you need to perform a division instruction, you must use a sequence of subtract instructions.
+    
+    How this can be carried out without wasting a million lines of code will be discussed further at a later point.
+    
+    Before we move on, it is important to note that these instructions may be carried out
+    using either binary or binary coded decimal(BCD). Also note, that both of these instruction implement the carry flag on the (P) register.
+    
+    When we use any of these instructions, it is often a good idea to clear this carry flag. This can be done using the CLC and SEC instructions. Where CLC and SEC mean the following:
+    
+        - CLC clears the carry flag, usually performed before an addition instruction
+        - SEC sets the carry flag, usually performed before a subtraction instruction
+        
+    When you are adding two values together, it is a good idea to clear the carry flag, and then check to see if that addition resulted in a setting of the carry flag, after the instruction has executed. The rational as to why this is a good idea should be pretty self evident. If it is not, please review Section 2.
+    
+    Since subtraction is the exact opposite of addition, setting the carry flag before the execution of a subtraction instruction, rather than clearing the carry flag, should also be pretty self evident as to its rational.
+    
+===========================================================================================
+
+    Increment & Decrement Instructions
+    
+        Our Increment Instructions:
+        
+            - INC   ; Increment the location in memory by one
+            - INX   ; Increment the X register by one
+            - INY   ; Increment the Y register by one 
+            
+        Our Decrement Instructions:
+        
+            - DEC   ; Decrement the location in memory by one 
+            - DEX   ; Decrement the X register by one
+            - DEY   ; Decrement the Y register by one
+
+    If the value of the decrement is zero, the Z flag equals one. If the sign-bit is 1, 
+    the N flag equals one.
+    
+===========================================================================================
+        
+Jump & Branch Instructions
+
+    Our Jump Instruction:
+    
+        - JMP   ; Jump to another location in memory, equivalent to "GOTO LABEL:"
+    
+    Our Conditional, Branch Instructions:
+        
+        - BCC   ; Branch on carry clear             C == 0
+        - BCS   ; Branch on carry set               C == 1
+        - BEQ   ; Branch on equal to zero           Z == 1
+        - BNE   ; Branch on not equal to zero       Z == 0
+        - BMI   ; Branch on minus                   N == 1
+        - BPL   ; Branch on plus                    N == 0
+        - BVC   ; Branch on overflow clear          V == 0
+        - BVS   ; Branch on overflow set            V == 1
+    
+    
+===========================================================================================
+    
+Example Code
+
+    Our First Loop:
+    ---------------
+    
+    ldy #64h    ; Load the value of 64h into the Y register
+
+Loop:           ; Begining of Loop subroutine
+    dey         ; Decrement the value stored in the Y register, y--
+    bne Loop    ; repeat until the value of Y equals 0, {Y|Y <= 0}
+    
+===========================================================================================    
+    
+    

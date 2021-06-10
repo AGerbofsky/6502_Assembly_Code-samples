@@ -1,0 +1,41 @@
+
+
+Aidan U. Gerbofsky
+June 30th, 2020
+Players, Missles, and Ball Screen Objects
+Section 5 - Learn Assembly Language by Making Games for the Atari 2600
+------------------------------------------------------------------------------------------------------------
+
+Player Objects
+---------------
+
+    - Each is an independent 8-bit pattern (GRP0, GRP1) with a foreground color (COLUP0, COLUP1) that		  can be positioned at any column of the scanline.
+      10100001 -> [9][_][9][_][_][_][_][9]
+
+    - Each player can be horizontally streched, multiplied, or inverted.
+        - NUSIZ0, NUSIZ1 (number/size)
+	- REFP0, REFP1 (reflect player)
+
+
+Missles and Balls
+-----------------
+
+    - Can be positioned just like players, but no bit pattern.
+
+    - just one pixel, but it can be horizontally stretched (2x, 4x, 8x)
+
+    - M0 and M1 use P0/P1 color
+
+    - BL uses the PF foreground color
+
+    - We have a limitation of up to 2 missiles only one the same horizontal space.
+
+
+What is the plan?
+-----------------
+
+    For each scanline, configure the TIA registers for each object before the beam reaches its intended
+    position. When performing this operation, the time slot is very short, forcing you, the programmer,
+    to pick and choose what to change so that you can reuse as much as you can of your existing code.
+
+

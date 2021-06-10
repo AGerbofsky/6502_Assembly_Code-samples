@@ -1,0 +1,64 @@
+
+
+					   | Description of the Program |
+	;;==============================================================================================
+	;; Aidan U. Gerbofsky
+	;; 30 Nov, 2020
+	;; ----------------------
+	;; rainbow.asm
+	;; =========================================================================================
+	;; This is my best attempt at re-designing the rainbow.asm example program for the Atari 2600
+	;; but this time for the Atari 7800. While the 7800 is completely backwards compatable with
+	;; the VCS, it is none-the-less a vastly more capable machine, boasting enourmously more RAM
+	;; (a whole 8x from 256-bytes to 2kB), much larger Cartridge ROM (from 4kB to 48kB), faster
+	;; clock-speeds for both the CPU and VDP, and so so much more...
+	;;
+	;; Thus, I think that it is important for me to begin working out the magic that is in the
+	;; 7800 by rewriting some of my VCS programs for it.
+	;;==============================================================================================
+
+	processor 6502 	; Pre-compile directive for DASM
+
+	include "macro.h"
+	include "7800.h"
+
+	seg code
+	org $3000 	; Sets the program origin vector to address , the location of
+			; The base address of the ROM cartrige
+
+START:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  We will begin our program by clearing all of the addresses representing the Zero-page, TIA, and
+;;;  MARIA chips.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	sei 		; Set interrupt disable
+	cld		; Set BCD as false
+
+	ldx #0		; A = NULL, X = #0, Y = NULL
+	txa		; A = #0,   X = #0, Y = NULL
+	tay		; (A = X = Y) == 0
+
+SCRUB_MEMORY_PAGE:
+	dex		; Decrement the value of X (Integer overflow so now X is #255)
+	txs 		; Transfer the value of X to the SP-register.
+	pha		; Push the value of #0 onto the current address of the Stack.
+	bne SCRUB_MEMORY_PAGE:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Begin padding the Encryption Key address range with #$FF
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	org $FF80	; $FFF8 - $FFFF is the location of the Atari 7800's ROM encryption key
+
+	ldy #$FFFF	; Store the location of the end of the segment in Y.
+	ldx #$FF	; Store #$FF in the X.
+	txa		; Transfer the value of X into the A.
+
+PAD_ENCRYPTION_KEY:
+	sta 
+	
+
+	beq PAD_ENCRYPT_KEY:
+

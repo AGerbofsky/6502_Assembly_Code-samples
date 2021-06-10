@@ -1,0 +1,42 @@
+
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	;;;							~ rainbow.a ~
+	;;; Information:
+	;;; ================================================================================================================
+	;;;	Author:		Aidan U. Gerbofsky
+	;;;	Contact:	aidan.gerbofsky@gmail.com | (317)800-5844, *NOT AVAILABLE ON Fridays-Saturdays!*
+	;;;	Date:		31 November, 2020 | 15 Kislev, Taf-Shin-Peh'
+	;;;		
+	;;;	Compiler:       DASM for 6502.
+	;;;	Emulator:	Stell (Atari 2600 with 4K Standard ROM Cartridge).
+	;;;
+	;;; Description:
+	;;;=================================================================================================================
+	;;;	The following source file is a reprogramming of an example program that I completed as part of a Udemy
+	;;;	course on Atari 2600 assembly programming. The difference here is that I will be using this as an
+	;;;	opportunity to express this early effort after further experience with 6502/6507 assembly programming.
+	;;;	That is, that the following source code will reflect a much more matured and intimate knowledge on
+	;;;	6502/6507 programming. To further exress this... I have taken the opportunity not only to demonstrate
+	;;;	more advanced concepts but also to show my intimate understanding of the 6502 instruction set by
+	;;;	writting this program in Op-Code. 
+	;;;
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	
+	processor 6502
+
+	include "vcs.h"
+
+	seg code
+	org $F000		; Defines the location of our 4k ROM Cartridge.	
+
+	hex 78			; f000	1-byte
+	hex 58			; f001	1-byte
+	hex a2 00		; f002	2-bytes
+	hex a6 ff		; f003	2-bytes
+	hex aa
+	
+
+	
+

@@ -1,0 +1,25 @@
+
+
+Addressing Modes on the 6502/6507
+
+	LDA #80		; Load the Accumulator with the literal value of 80
+	LDA $80		; Load the Accumulator with the value stored inside memory address 80h
+
+Pneumonics:
+
+Although these look like the same instruction to us, they are actually two different instructions
+to the microprocessor.
+
+The first is called "Immediate Mode". It is where we load directly the value inside the accumulator.
+The second is called the "Absolute (Zero Page) Mode". This is where we get an address in the zero
+page in memory, and then load the A register with the value stored at that location in memory.
+
+Difference in Opcodes:
+
+	LDA #80		; Translates into A9 50, or 1010 1001  0101 0000, in hex and binary respectively.
+	LDA $80		; Translates into A5 80, or 1010 0101  0101 0000, in hex and binary respectively.
+
+Immediate mode (HEX)
+
+	LDA #$80	; Loads the A register with the literal hexadecimal value 80h
+                ; 80h is equivalent to 128 in decimal.

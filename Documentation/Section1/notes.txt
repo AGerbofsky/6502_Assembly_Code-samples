@@ -1,0 +1,156 @@
+
+
+ATARI VCS/2600 Hardware Specifications
+
+	CPU:	MOS 6507 (6502 with a 12-bit address buss).
+		Word size = 2-bytes
+
+	VDP:	ATARI TIA Chip (Television Interface Adapter)
+
+	RAM:	128 bytes 6532 RIOT (RAM/Input/Output/Timer) Chip
+
+	ROM: 	4kB Game Cartridge
+
+	Inp:	Two 9-pin controller ports
+
+	Out:	TV via RCA Connector
+
+
+
+Every 2600 Model:
+
+	1977: "Heavy Sixer"
+	1978: "Light Sixer"
+	
+	1980: "Four Switch"
+	1981: "Darth Vader"
+
+
+
+
+	1986: 2600 Jr.
+
+
+Systems using the MOS 6502:
+
+	ATARI 2600
+	Apple II & IIe
+	Commodore PET
+	Commodore VIC-20
+	Acorn BBC Micro
+	ATARI 5200
+	Nintendo Entertainment System
+	Commodore 64
+	ATARI 7800
+	Super Nintendo Entertainment System
+	Bender Rodreguez (Futurama)
+
+
+The 6502/6507 Microprocessor
+
+	Where as the 6502 uses a 40-pin DIP configuration, the 6507 uses a 28-pin DIP configuration
+
+	These 28-pins allow for:
+
+		- 13-bit address bus
+		- 8-bit  data bus (1-byte word size)
+	
+	The remaining pins are:
+		
+		- Power
+		- CPU timing clock
+		- CPU reset
+		- Request bus wait states (RDY pin)
+		- Read/write commands to memory from the CPU
+
+	*Note: There are NO IRQ or NMI pin on the 6507.*
+
+	
+6507 CPU & BUS Overview
+
+	- The CPU ticks 1.19 million times per second
+	- each tick is called a clock cycle
+
+	The 6502/6507 contains seven main parts:
+		
+		- One ALU (arithmetic logic unit)
+			- The ALU uses an accumulator register (A register) in-order
+			  to consecutively add (accumulate) data from either the GPRs
+			  or from memory itself.
+
+			  The ALU then takes that data, acts on an instruction, then
+			  either sends it back into the A register or stores it in
+			  primary memory.
+
+		- Six addressable registers
+			- These are PC, SP, P, X, Y, A
+			
+			SP & PC registers:
+				
+				For the most part, every register in a 6502 based processor is 8-bits
+				wide. However in the case of the SP and PC registers, they are 16-bits
+				wide. This is because the 6502 was designed with the intention of 
+				addressing (2 to the 16th) bits of data, or up-to 64Kb of data. 
+
+				Since the SP, or Stack Pointer, is responsible for storing the address
+				of the instruction, having a 16-bit address width makes sense.
+
+				In the case of the PC, or the Program Counter, having a 16-bit wide 
+				address width makes sense for similar reasons. However, in ther case of
+				the PC, it is not the location of the specific instruction that is to be
+				stored, but rather the location of the NEXT instruction to be fetched in
+				memory. It must be able to loop through all possibly addressable locations
+				in memory and thus must be 16-bits wide ad the address bus of the system
+				is 16-bits wide (64kb addressable), in-order to accomodate.
+
+				Think of the SP kind of like a pointer in C. It REFERENCES the location
+				in memory that the data is stored, or the address of the data stored at the
+			        address currently stored in the PC.
+
+			P register:
+				
+				The P register is known as the Processor State register. It is essentially
+				the same as the FLAGS register on 8086 among other microprocessor 
+				architectures.
+					
+					- The P register is split into 8 (really 7) 1-bit boolean "sub
+					  registers".
+
+					The values that can be stored within these sub-resigsters are:
+					
+						n - The negative value flag, stored on the MSB. 		1 = Carry.
+						v - The overflow flag, stored on bit 6.				1 = Result Zero
+						BLANK	
+						b - The break instruction interrupt, stored on bit 4.		1 = Disabled
+						d - The decimal mode flag, stored on bit 3.			1 = Decimal Mode
+						i - The IRQ disable flag, stored on bit 2.			1 = Break caused interrupt
+						z - the zero result flag, stored on bit 1.			1 = Overflow
+						c - the carry result flag, stored on the LSB.			1 = Negative
+
+
+		- Data Bus
+
+			As mentioned in the information above, the 6502 features an 8-bit data bus. This
+			means that the 6502 can only act on 00h - FFh of data at a time. This defines
+			what we call the word size of the processor, or in-other-words, the word size for
+			the 6502 and all its derivatives is 1-byte. 
+
+			The data bus is responsible for moving the data from register to register, or from
+			memory to register, and then back again.
+
+		- Address Bus
+			
+			As exaustively mentioned above, the address bus of the 6502 is 16-bits wide. This 
+			means that a 6502 can access up-to 64Kb of data. However, in the case of the ATARI
+			VCS's 6507, the address bus is 12-bits wide, meaning that it can only access up-to
+			4Kb of data, all-together.
+
+			Where as the Data Bus determines how wide an instruction/data can be, the address
+			bus determines the amount of addressable locations that data can be stored and accessed
+			from.
+
+
+	Carry & Overflow
+
+		When the c flag is triggered, when 1 is added to 1, the resulting 1 is then carried to the
+		next bit.

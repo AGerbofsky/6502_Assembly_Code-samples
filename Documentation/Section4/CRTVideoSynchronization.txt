@@ -1,0 +1,99 @@
+ 
+CRT Video Synchronization - Section 4
+Aidan U. Gerbofsky, 24th June, 2020
+
+
+
+Painting the CRT
+================
+
+For the most part, when we are talking about CRT displays, there are two 
+contending standards. These are NTSC and PAL. or North American (60Hz) and 
+International (50Hz).
+
+
+
+The Parts of a CRT
+==================
+
+A CRT display consists of the following:
+
+    - A Cathode
+    - Focus and Accelerating Anode
+    - Deflection Coil
+    - Electron Beam
+    - and a Phosphorescent Screen
+    
+In the Atari 2600/VCS, it is the job of the TIA to control the display, and 
+thus the action of outputing to the display.
+
+For the most part, both NTSC and PAL TIA chips are identical, however, their
+pinout is different, as they are different standards (of-course).
+
+
+
+How does the TIA write graphics to our display?
+===============================================
+
+On a conventaional CRT display, the electron beam "paints" the image one-line
+at-a-time. This is called a scanline, and it is drawn from the very top left of
+the display, all the way to the end of that row of pixels. After this is process
+is repeated on the next, decending row of pixels, in the same manour as the last.
+
+Because of the increadibly limited zero page size that is allocated to the TIA 
+chip (a whopping $0-$FF to be precise), the TIA has to be reprogrammed each and
+upon every scanline on the display.
+
+If I want to display the particular elements of a program, we have to do something
+called "Racing the Beam". This is that after, or right before the program begins
+displaying anything, in the case of the begining of the program, we need to utilize
+the screen blanking time to make our calculations, in order to effect change on 
+the next line following the screen blank.
+
+in this way everything image has to be constructed one line at-a-time.
+
+
+
+How do we make our processor know when we are done rendering a Scanline?
+========================================================================
+
+To even discuss this topic there are first some concepts that must be intoduced
+to us. These are:
+
+    - Horizontal Blank, which is comprised of 68 color blocks. You can think of         
+      these 68 color blocks as pixels.
+      
+    - The Visible Scanline, which is comprised of 160 color blocks.
+      
+    - The TIA clock frequency, which is 3.8 MHz
+    
+In order for us to control when a scanline is finished drawing to the screen, 
+we must halt the processor until it recieves a WSYNC signal from the TIA.
+    
+Piecing the it all together now...
+-----------------------------------
+
+On NTSC displays we have a Vertical Sync of 3 scanlines. This VSYNC feature is
+responsible for telling our TIA when a frame starts, and when a new frame 
+begins. After these 3 VSYNC scanlines are done rendering we begin our Vertical
+Blank. The VBLANK is 37 Scanlines long. Immdeately following the rendering of
+our Vertical Blank we begin rendering our Visible Scanlines.
+
+However much like the buffers before the Visible Scanlines, the Visible
+Scanlines begin with a Horizontal Blank, in which is not a separite scanline 
+buffer, but rather an invisible, yet contiguous piece of a visible scanline.
+
+The visible section of our rendered scanlines is comprised of 192 lines on an 
+NTSC display.
+
+After we are finished rendering the visible scanlines, we begin rendering our
+OVERSCAN buffer. The OVERSCAN buffer is comprised of 30 scanlines.
+
+Relation of Color (pixel) clocks and CPU clocks
+-----------------------------------------------
+
+Every scanline is comprised of 228 color clocks. In relation to the CPU, this 
+corresponds to 76 clock cycles. If you divide the 228 color clocks by the 76 
+CPU clock cycles, you will see that there is about 3 color clocks per CPU
+cycle.
+
